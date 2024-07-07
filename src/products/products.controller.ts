@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
 import { ProductsService } from './products.service';
-import { Get, Param } from '@nestjs/common';
+import { Get, Param, Delete } from '@nestjs/common';
 
 @Controller('products')
 export class ProductsController {
@@ -14,5 +14,15 @@ export class ProductsController {
   @Get('/:id')
   getById(@Param('id') id: string): any {
     return this.productsService.getById(id);
+  }
+
+  @Delete('/:id')
+  deleteById(@Param('id') id: string) {
+    const success = this.productsService.deleteById(id);
+    if (success) {
+      return { success: true };
+    } else {
+      return { success: false };
+    }
   }
 }

@@ -10,4 +10,15 @@ export class ProductsService {
   public getById(id: Product['id']): Product | null {
     return db.products.find((p) => p.id === id);
   }
+
+  public deleteById(id: Product['id']): boolean {
+    const index = db.products.findIndex((p) => p.id === id);
+
+    if (index !== -1) {
+      db.products.splice(index, 1);
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
