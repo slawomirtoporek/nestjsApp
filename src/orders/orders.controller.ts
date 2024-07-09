@@ -5,8 +5,11 @@ import {
   Get,
   Param,
   Delete,
+  Post,
+  Body,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
+import { CreateOrderDTO } from './dtos/create-orders.dto';
 
 @Controller('orders')
 export class OrdersController {
@@ -34,5 +37,10 @@ export class OrdersController {
     this.ordersService.deleteById(id);
 
     return { success: true };
+  }
+
+  @Post('/')
+  create(@Body() orderData: CreateOrderDTO) {
+    return this.ordersService.create(orderData);
   }
 }
