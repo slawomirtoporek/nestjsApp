@@ -1,6 +1,7 @@
 import {
   Controller,
   ParseUUIDPipe,
+  NotFoundException,
   Get,
   Param,
   Delete,
@@ -23,17 +24,21 @@ export class ProductsController {
 
   @Get('/:id')
   getById(@Param('id', new ParseUUIDPipe()) id: string): any {
-    return this.productsService.getById(id);
+    const prod = this.productsService.getById(id);
+
+    if (!prod) throw new NotFoundException('Product not found');
+
+    return prod;
   }
 
   @Delete('/:id')
   deleteById(@Param('id', new ParseUUIDPipe()) id: string) {
-    const success = this.productsService.deleteById(id);
-    if (success) {
-      return { success: true };
-    } else {
-      return { success: false };
-    }
+    if (!this.productsService.getById(id))
+      throw new NotFoundException('Product not found');
+
+    this.productsService.deleteById(id);
+
+    return { success: true };
   }
 
   @Post('/')
@@ -46,6 +51,9 @@ export class ProductsController {
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() productData: UpdateProductDTO,
   ) {
+    if (!this.productsService.getById(id))
+      throw new NotFoundException('Product not found');
+
     this.productsService.updateById(id, productData);
     return { success: true };
   }
