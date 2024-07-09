@@ -26,4 +26,13 @@ export class OrdersService {
     db.orders.push(newOrder);
     return newOrder;
   }
+
+  public updateById(id: Order['id'], orderData: Omit<Order, 'id'>): void {
+    db.orders = db.orders.map((o) => {
+      if (o.id === id) {
+        return { ...o, ...orderData };
+      }
+      return o;
+    });
+  }
 }
