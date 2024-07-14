@@ -1,4 +1,3 @@
-import { Transform } from 'class-transformer';
 import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
 
 export class CreateOrderDTO {
@@ -8,11 +7,7 @@ export class CreateOrderDTO {
   productId: string;
 
   @IsNotEmpty()
+  @IsUUID()
   @IsString()
-  client: string;
-
-  @IsNotEmpty()
-  @IsString()
-  @Transform(({ value }) => (Array.isArray(value) ? value.join(', ') : ''))
-  address: string;
+  clientId: string;
 }
